@@ -1,0 +1,4 @@
+requests==2.26.0
+vk==2.0.2
+matplotlib==3.5.1
+vk-api==11.9.7

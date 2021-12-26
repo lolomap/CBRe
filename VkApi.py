@@ -16,7 +16,7 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
 def upload_photo(name, user_session):
     photo_server = user_session.photos.getWallUploadServer(group_id=int(os.environ.get('GROUP_ID')),
-                                                           v=int(os.environ.get('API_VERSION')))
+                                                           v=str(os.environ.get('API_VERSION')))
     upload_url = photo_server['upload_url']
     if name == 'likes':
         img = {'photo': ('like_post_pic.png', open('likes.png', 'rb'))}
@@ -28,7 +28,7 @@ def upload_photo(name, user_session):
                                               hash=result['hash'],
                                               server=result['server'],
                                               group_id=int(os.environ.get('GROUP_ID')),
-                                              v=int(os.environ.get('API_VERSION')))
+                                              v=str(os.environ.get('API_VERSION')))
     return photo
 
 

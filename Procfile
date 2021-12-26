@@ -1,1 +1,1 @@
-ruDALL-Evk: python main.py
+CBRe: python main.py

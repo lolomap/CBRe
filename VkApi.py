@@ -19,7 +19,7 @@ def upload_photo(name, user_session):
                                                            v=int(os.environ.get('API_VERSION')))
     upload_url = photo_server['upload_url']
     if name == 'likes':
-        img = {'photo': ('like_post.png', open('likes.png', 'rb'))}
+        img = {'photo': ('like_post_pic.png', open('likes.png', 'rb'))}
     else:
         raise Exception('Wrong photo name')
     response = requests.post(upload_url, files=img)

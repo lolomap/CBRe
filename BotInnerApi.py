@@ -2,7 +2,6 @@
 import datetime
 import os
 import pickle
-import random
 import time
 import redis
 
@@ -21,13 +20,13 @@ def save_list(groups_list):
 	if len(groups_list.keys()) == 0:
 		return
 	db = redis.from_url(os.environ.get('REDIS_URL'))
-	db.hmset('list', groups_list)
+	db.set('list', pickle.dumps(groups_list))
 
 
 def load_list():
 	try:
 		db = redis.from_url(os.environ.get('REDIS_URL'))
-		return db.hgetall('list')
+		return pickle.loads(db.get('list'))
 	except Exception:
 		return {}
 
@@ -52,13 +51,13 @@ def save_groups_data(subs):
 	if len(subs.keys()) == 0:
 		return
 	db = redis.from_url(os.environ.get('REDIS_URL'))
-	db.hmset('groups_data', subs)
+	db.set('groups_data', pickle.dumps(subs))
 
 
 def load_groups_data():
 	try:
 		db = redis.from_url(os.environ.get('REDIS_URL'))
-		return db.hgetall('groups_data')
+		return pickle.loads(db.get('groups_data'))
 	except Exception:
 		return {'last': {}, 'deltas': {}, 'all': {}, 'likes': {}}
 

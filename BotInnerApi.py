@@ -16,6 +16,11 @@ import io
 import VkApi
 
 
+def set_list():
+	with open('list', 'rb') as f:
+		save_list(pickle.load(f))
+
+
 def save_list(groups_list):
 	if len(groups_list.keys()) == 0:
 		return
@@ -104,13 +109,16 @@ def get_likes(group_id, user_session):
 	return likes_total
 
 
-def get_info(groups_list, groups_data, user_session):
+def get_info(groups_list, groups_data, user_session, is_likes):
 	groups = VkApi.get_groups_info(groups_list, user_session, optional=True)
 	info = []
 	time.sleep(2)
 	for group in groups:
 		delta = group['members_count'] - groups_data['last'].get(group['screen_name'], group['members_count'])
-		likes = get_likes(group['screen_name'], user_session)
+		if is_likes:
+			likes = get_likes(group['screen_name'], user_session)
+		else:
+			likes = groups_data['likes'].get(group['screen_name'], 0)
 		group_info = {
 			'id': group['screen_name'],
 			'name': group['name'],
@@ -163,7 +171,7 @@ def create_post_content(info, mode, user_session):
 				post_text += '⏸ '
 
 			post_text += str(i) + '. '
-			# post_text += '[' + group_info['id'] + '|'
+			post_text += '[' + group_info['id'] + '|'
 			post_text += group_info['name'] + ']: ' + str(group_info['subs']) + \
 				' (' + delta_sign + str(group_info['delta']) + ')\n'
 
@@ -179,7 +187,7 @@ def create_post_content(info, mode, user_session):
 		i = 1
 		for group_info in likes_sort_info:
 			post_text += str(i) + '. '
-			# post_text += '[' + group_info['id'] + '|'
+			post_text += '[' + group_info['id'] + '|'
 			post_text += group_info['name'] + ']: ' + str(group_info['delta_likes']) + '❤\n'
 			i += 1
 

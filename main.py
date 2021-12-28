@@ -28,22 +28,23 @@ async def await_post(user_session, session):
 		need_time = datetime.datetime(t.year, t.month, t.day, int(os.environ.get('RATING_TIME')), 0)
 		if t.hour >= int(os.environ.get('RATING_TIME')):
 			need_time += datetime.timedelta(days=1)
-		# await asyncio.sleep((need_time - t).seconds)
-		# await asyncio.sleep(1000)
+
 		if daily_post(user_session, session):
 			print('posted')
 		else:
 			print('fail posting')
-		await asyncio.sleep(20)
+		await asyncio.sleep((need_time - t).seconds)
 
 
 def daily_post(user_session, session):
 	try:
+		is_like_day = datetime.date.isoweekday(datetime.datetime.today()) == int(os.environ.get('LIKE_RATING_DAY'))
+
 		group_list = BotInnerApi.load_list()
 		ban_list = BotInnerApi.load_banlist()
 		groups_data = BotInnerApi.load_groups_data()
 
-		info = BotInnerApi.get_info(list(group_list.keys()), groups_data, user_session)
+		info = BotInnerApi.get_info(list(group_list.keys()), groups_data, user_session, is_like_day)
 		BotInnerApi.save_groups_data(BotInnerApi.take_groups_data(info))
 
 		cleaned_info = []
@@ -72,7 +73,7 @@ def daily_post(user_session, session):
 			photos_ready=[VkApi.upload_photo_to_post(content['photo'], user_session)]
 		)
 
-		if datetime.date.isoweekday(datetime.datetime.today()) == int(os.environ.get('LIKE_RATING_DAY')):
+		if is_like_day:
 			content = BotInnerApi.create_post_content(cleaned_info, 'likes', user_session)
 			VkApi.post(content['text'], user_session, photos_ready=[content['photo']])
 

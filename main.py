@@ -25,18 +25,22 @@ class AsyncLoopThread(Thread):
 
 async def await_post(user_session, session):
 	while True:
-		print('Wait time to post')
-		t = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
-		need_time = datetime.datetime(t.year, t.month, t.day, int(os.environ.get('RATING_TIME')), 0)
-		if t.hour >= int(os.environ.get('RATING_TIME')):
-			need_time += datetime.timedelta(days=1)
+		try:
+			print('Wait time to post')
+			t = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
+			need_time = datetime.datetime(t.year, t.month, t.day, int(os.environ.get('RATING_TIME')), 0)
+			if t.hour >= int(os.environ.get('RATING_TIME')):
+				need_time += datetime.timedelta(days=1)
 
-		print((need_time - t).seconds / 60 / 60)
-		if daily_post(user_session, session):
-			print('posted')
-		else:
-			print('fail posting')
-		await asyncio.sleep((need_time - t).seconds)
+			print((need_time - t).seconds / 60 / 60)
+			if daily_post(user_session, session):
+				print('posted')
+			else:
+				print('fail posting')
+			await asyncio.sleep((need_time - t).seconds)
+		except:
+			traceback.format_exc()
+			continue
 
 
 def daily_post(user_session, session):

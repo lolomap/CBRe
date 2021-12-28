@@ -40,6 +40,7 @@ async def await_post(user_session, session):
 			await asyncio.sleep((need_time - t).seconds)
 		except:
 			traceback.format_exc()
+			break
 
 
 def daily_post(user_session, session):

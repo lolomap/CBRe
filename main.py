@@ -29,11 +29,11 @@ async def await_post(user_session, session):
 		if t.hour >= int(os.environ.get('RATING_TIME')):
 			need_time += datetime.timedelta(days=1)
 
+		await asyncio.sleep((need_time - t).seconds)
 		if daily_post(user_session, session):
 			print('posted')
 		else:
 			print('fail posting')
-		await asyncio.sleep((need_time - t).seconds)
 
 
 def daily_post(user_session, session):

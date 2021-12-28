@@ -80,6 +80,7 @@ def process_request(groups_list, event, session):
 				BotInnerApi.save_groups_data({'last': {}, 'deltas': {}, 'all': {}, 'likes': {}})
 			if event.obj['message']['text'] == 'бэкап':
 				BotInnerApi.set_list()
+		return
 
 	payload = json.loads(event.obj['message']['payload'])
 	if list(payload.values())[0][0] == 1 and not (list(payload.keys())[0] in groups_list):

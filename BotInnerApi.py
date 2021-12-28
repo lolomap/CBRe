@@ -4,6 +4,7 @@ import os
 import pickle
 import random
 import time
+import redis
 
 import matplotlib as mpl
 
@@ -17,41 +18,44 @@ import VkApi
 
 
 def save_list(groups_list):
-	with open('list', 'wb') as f:
-		pickle.dump(groups_list, f)
+	db = redis.from_url(os.environ.get('REDIS_URL'))
+	db.hmset('list', groups_list)
 
 
 def load_list():
 	try:
-		with open('list', 'rb') as f:
-			return pickle.load(f)
-	except FileNotFoundError:
+		db = redis.from_url(os.environ.get('REDIS_URL'))
+		return db.hgetall('list')
+	except Exception:
 		return {}
 
 
 def save_banlist(groups_list):
-	with open('banlist', 'wb') as f:
-		pickle.dump(groups_list, f)
+	db = redis.from_url(os.environ.get('REDIS_URL'))
+	db.lpush('banlist', *groups_list)
 
 
 def load_banlist():
 	try:
-		with open('banlist', 'rb') as f:
-			return pickle.load(f)
-	except FileNotFoundError:
+		db = redis.from_url(os.environ.get('REDIS_URL'))
+		res = []
+		while db.llen('banlist') != 0:
+			res.append(db.lpop('banlist'))
+		return res
+	except Exception:
 		return []
 
 
 def save_groups_data(subs):
-	with open('groupsdata', 'wb') as f:
-		pickle.dump(subs, f)
+	db = redis.from_url(os.environ.get('REDIS_URL'))
+	db.hmset('groups_data', subs)
 
 
 def load_groups_data():
 	try:
-		with open('groupsdata', 'rb') as f:
-			return pickle.load(f)
-	except FileNotFoundError:
+		db = redis.from_url(os.environ.get('REDIS_URL'))
+		return db.hgetall('groups_data')
+	except Exception:
 		return {'last': {}, 'deltas': {}, 'all': {}, 'likes': {}}
 
 

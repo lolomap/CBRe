@@ -75,12 +75,14 @@ def remove_request_notify(event, session, user_session):
 
 def process_request(groups_list, event, session):
 	if 'payload' not in event.obj['message'].keys():
+		'''
 		if event.obj['message']['from_id'] == int(os.environ.get('USER_NOTIFY')):
 			gids = event.obj['message']['text'].split('\n')
 			for gid in gids:
 				groups_list[gid.split(' ')[0]] = 385055904
 			BotInnerApi.save_list(groups_list)
 		return
+		'''
 	payload = json.loads(event.obj['message']['payload'])
 	if list(payload.values())[0][0] == 1 and not (list(payload.keys())[0] in groups_list):
 		groups_list[list(payload.keys())[0]] = list(payload.values())[0][1]

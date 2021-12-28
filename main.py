@@ -34,7 +34,7 @@ async def await_post(user_session, session):
 			print('posted')
 		else:
 			print('fail posting')
-		await asyncio.sleep(10)
+		await asyncio.sleep(20)
 
 
 def daily_post(user_session, session):

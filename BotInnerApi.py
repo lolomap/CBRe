@@ -18,6 +18,8 @@ import VkApi
 
 
 def save_list(groups_list):
+	if len(groups_list.keys()) == 0:
+		return
 	db = redis.from_url(os.environ.get('REDIS_URL'))
 	db.hmset('list', groups_list)
 
@@ -47,6 +49,8 @@ def load_banlist():
 
 
 def save_groups_data(subs):
+	if len(subs.keys()) == 0:
+		return
 	db = redis.from_url(os.environ.get('REDIS_URL'))
 	db.hmset('groups_data', subs)
 

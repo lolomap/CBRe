@@ -3,6 +3,8 @@ import datetime
 import json
 import os
 
+import pytz
+
 import BotInnerApi
 import VkApi
 
@@ -101,7 +103,7 @@ def group_moderate(group_info, user_session):
 		is_able = not ('deactivated' in list(group_info.keys()))
 		is_members_open = ('members_count' in list(group_info.keys()))
 		post_time = VkApi.get_last_post(user_session, group_info['screen_name'])['date']
-		three_month_ago = (datetime.datetime.today() - datetime.timedelta(days=90)).timestamp()
+		three_month_ago = (datetime.datetime.now(pytz.timezone('Europe/Moscow')) - datetime.timedelta(days=90)).timestamp()
 		is_active = post_time - three_month_ago
 		return is_open and is_members_open and is_able and (is_active > 0)
 	except Exception as e:

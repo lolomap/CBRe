@@ -6,6 +6,8 @@ import asyncio
 import traceback
 from threading import Thread
 
+import pytz as pytz
+
 import BotInnerApi
 import BotOutterApi
 import VkApi
@@ -24,7 +26,7 @@ class AsyncLoopThread(Thread):
 async def await_post(user_session, session):
 	while True:
 		print('Wait time to post')
-		t = datetime.datetime.today()
+		t = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
 		need_time = datetime.datetime(t.year, t.month, t.day, int(os.environ.get('RATING_TIME')), 0)
 		if t.hour >= int(os.environ.get('RATING_TIME')):
 			need_time += datetime.timedelta(days=1)
@@ -38,7 +40,8 @@ async def await_post(user_session, session):
 
 def daily_post(user_session, session):
 	try:
-		is_like_day = datetime.date.isoweekday(datetime.datetime.today()) == int(os.environ.get('LIKE_RATING_DAY'))
+		is_like_day = datetime.date.isoweekday(datetime.datetime.now(pytz.timezone('Europe/Moscow'))) ==\
+			int(os.environ.get('LIKE_RATING_DAY'))
 
 		group_list = BotInnerApi.load_list()
 		ban_list = BotInnerApi.load_banlist()

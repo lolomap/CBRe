@@ -132,9 +132,9 @@ def get_info(groups_list, groups_data, user_session, is_likes):
 			group_info['all'] = []
 			for old_delta in groups_data['all'][group['screen_name']]:
 				group_info['all'].append(old_delta)
-			group_info['all'].append({'value': delta, 'date': datetime.datetime.today()})
+			group_info['all'].append({'value': delta, 'date': datetime.datetime.now(pytz.timezone('Europe/Moscow'))})
 		else:
-			group_info['all'] = [{'value': delta, 'date': datetime.datetime.today()}]
+			group_info['all'] = [{'value': delta, 'date': datetime.datetime.now(pytz.timezone('Europe/Moscow'))}]
 		group_info['passes'] = BotOutterApi.group_moderate(group, user_session)
 		info.append(group_info)
 		time.sleep(0.5)

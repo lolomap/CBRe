@@ -32,6 +32,8 @@ def load_list():
 
 
 def save_banlist(groups_list):
+	if len(groups_list) == 0:
+		return
 	db = redis.from_url(os.environ.get('REDIS_URL'))
 	db.lpush('banlist', *groups_list)
 

@@ -6,7 +6,7 @@ import asyncio
 import traceback
 from threading import Thread
 
-import pytz as pytz
+import pytz
 
 import BotInnerApi
 import BotOutterApi

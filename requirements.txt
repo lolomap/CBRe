@@ -3,3 +3,4 @@ vk==2.0.2
 matplotlib==3.5.1
 vk-api==11.9.7
 redis==4.1.0
+pytz==2021.3

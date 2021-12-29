@@ -24,22 +24,26 @@ class AsyncLoopThread(Thread):
 
 
 async def await_post(user_session, session):
-	BotInnerApi.save_banlist(['grkss', 'gips_albio', 'siburlend_cb', 'narianskaia', 'publicmsds', 'russian__republic', 'greattsardom_republic', 'murzinskiy_chel', 'metropolis_countryballs', 'country_balls', 'safflia'])
-
-	ban_list_b = BotInnerApi.load_banlist()
-	ban_list = []
-	for ban in ban_list_b:
-		ban_list.append(ban.decode('utf-8'))
-	print(ban_list)
-
-	group_list = BotInnerApi.load_list()
-	for group in list(group_list.keys()):
-		if group in ban_list:
-			group_list = {key: val for key, val in group_list.items() if val != group}
-	print(group_list)
-
 	while True:
 		try:
+			BotInnerApi.save_banlist(
+				['grkss', 'gips_albio', 'siburlend_cb', 'narianskaia', 'publicmsds', 'russian__republic',
+				 'greattsardom_republic', 'murzinskiy_chel', 'metropolis_countryballs', 'country_balls', 'safflia'])
+
+			ban_list_b = BotInnerApi.load_banlist()
+			ban_list = []
+			for ban in ban_list_b:
+				ban_list.append(ban.decode('utf-8'))
+			print(ban_list)
+
+			group_list = BotInnerApi.load_list()
+			for group in list(group_list.keys()):
+				if group in ban_list:
+					group_list = {key: val for key, val in group_list.items() if val != group}
+			print(group_list)
+
+			##############
+
 			print('Wait time to post')
 			t = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
 			# need_time = datetime.datetime(t.year, t.month, t.day, int(os.environ.get('RATING_TIME')), 0)

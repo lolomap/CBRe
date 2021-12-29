@@ -37,7 +37,6 @@ async def await_post(user_session, session):
 			print(t)
 			print(need_time)
 			print((need_time.timestamp() - t.timestamp()) / 60 / 60)
-			print(BotInnerApi.load_banlist())
 			await asyncio.sleep(need_time.timestamp() - t.timestamp())
 			if daily_post(user_session, session):
 				print('posted')
@@ -63,7 +62,7 @@ def daily_post(user_session, session):
 		cleaned_info = []
 		for group_info in info:
 			if not group_info['passes']:
-				if group_info['id'] in ban_list:
+				if group_info['id'].encode("utf-8") in ban_list:
 					print('banned')
 					group_list = {key: val for key, val in group_list.items() if val != group_info['id']}
 				else:

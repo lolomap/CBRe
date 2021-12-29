@@ -24,6 +24,18 @@ class AsyncLoopThread(Thread):
 
 
 async def await_post(user_session, session):
+	ban_list_b = BotInnerApi.load_banlist()
+	ban_list = []
+	for ban in ban_list_b:
+		ban_list.append(ban.decode('utf-8'))
+	print(ban_list)
+
+	group_list = BotInnerApi.load_list()
+	for group in list(group_list.keys()):
+		if group in ban_list:
+			group_list = {key: val for key, val in group_list.items() if val != group}
+	print(group_list)
+
 	while True:
 		try:
 			print('Wait time to post')
@@ -37,12 +49,6 @@ async def await_post(user_session, session):
 			print(t)
 			print(need_time)
 			print((need_time.timestamp() - t.timestamp()) / 60 / 60)
-
-			ban_list_b = BotInnerApi.load_banlist()
-			ban_list = []
-			for ban in ban_list_b:
-				ban_list.append(ban.decode('utf-8'))
-			print(ban_list)
 
 			await asyncio.sleep(need_time.timestamp() - t.timestamp())
 			if daily_post(user_session, session):
@@ -67,7 +73,6 @@ def daily_post(user_session, session):
 		groups_data = BotInnerApi.load_groups_data()
 
 		info = BotInnerApi.get_info(list(group_list.keys()), groups_data, user_session, is_like_day)
-		BotInnerApi.save_groups_data(BotInnerApi.take_groups_data(info))
 
 		cleaned_info = []
 		for group_info in info:
@@ -88,6 +93,7 @@ def daily_post(user_session, session):
 				cleaned_info.append(group_info)
 		BotInnerApi.save_banlist(ban_list)
 		BotInnerApi.save_list(group_list)
+		BotInnerApi.save_groups_data(BotInnerApi.take_groups_data(cleaned_info))
 
 		content = BotInnerApi.create_post_content(cleaned_info, 'subs', user_session)
 		VkApi.post(

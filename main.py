@@ -28,13 +28,16 @@ async def await_post(user_session, session):
 		try:
 			print('Wait time to post')
 			t = datetime.datetime.now(pytz.timezone('Europe/Moscow'))
-			need_time = datetime.datetime(t.year, t.month, t.day, int(os.environ.get('RATING_TIME')), 0)
+			# need_time = datetime.datetime(t.year, t.month, t.day, int(os.environ.get('RATING_TIME')), 0)
+			need_time = pytz.timezone('Europe/Moscow').localize(
+				datetime.datetime(t.year, t.month, t.day, hour=int(os.environ.get('RATING_TIME')), minute=0))
 			if t.hour >= int(os.environ.get('RATING_TIME')):
 				need_time += datetime.timedelta(days=1)
 
 			print(t)
 			print(need_time)
 			print((need_time.timestamp() - t.timestamp()) / 60 / 60)
+			print(BotInnerApi.load_banlist())
 			await asyncio.sleep(need_time.timestamp() - t.timestamp())
 			if daily_post(user_session, session):
 				print('posted')

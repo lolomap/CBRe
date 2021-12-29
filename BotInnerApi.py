@@ -54,7 +54,7 @@ def load_banlist():
 		return res
 	except Exception:
 		traceback.format_exc()
-		return []
+		return ['EXCEPTION']
 
 
 def save_groups_data(subs):

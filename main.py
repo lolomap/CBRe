@@ -27,8 +27,10 @@ async def await_post(user_session, session):
 	while True:
 		try:
 			BotInnerApi.save_banlist(
-				['grkss', 'gips_albio', 'siburlend_cb', 'narianskaia', 'publicmsds', 'russian__republic',
-				 'greattsardom_republic', 'murzinskiy_chel', 'metropolis_countryballs', 'country_balls', 'safflia'])
+				[
+					'grkss', 'gips_albio', 'siburlend_cb', 'narianskaia', 'publicmsds', 'russian__republic',
+					'greattsardom_republic', 'murzinskiy_chel', 'metropolis_countryballs', 'country_balls', 'safflia'
+				])
 
 			ban_list_b = BotInnerApi.load_banlist()
 			ban_list = []

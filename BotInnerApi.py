@@ -3,6 +3,8 @@ import datetime
 import os
 import pickle
 import time
+import traceback
+
 import redis
 import pytz
 
@@ -34,6 +36,7 @@ def load_list():
 		db = redis.from_url(os.environ.get('REDIS_URL'))
 		return pickle.loads(db.get('list'))
 	except Exception:
+		traceback.format_exc()
 		return {}
 
 
@@ -52,6 +55,7 @@ def load_banlist():
 			res.append(db.lpop('banlist'))
 		return res
 	except Exception:
+		traceback.format_exc()
 		return []
 
 
@@ -67,6 +71,7 @@ def load_groups_data():
 		db = redis.from_url(os.environ.get('REDIS_URL'))
 		return pickle.loads(db.get('groups_data'))
 	except Exception:
+		traceback.format_exc()
 		return {'last': {}, 'deltas': {}, 'all': {}, 'likes': {}}
 
 

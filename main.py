@@ -32,12 +32,13 @@ async def await_post(user_session, session):
 			if t.hour >= int(os.environ.get('RATING_TIME')):
 				need_time += datetime.timedelta(days=1)
 
+			print(t)
 			print((need_time.timestamp() - t.timestamp()) / 60 / 60)
+			await asyncio.sleep(need_time.timestamp() - t.timestamp())
 			if daily_post(user_session, session):
 				print('posted')
 			else:
 				print('fail posting')
-			await asyncio.sleep(need_time.timestamp() - t.timestamp())
 		except:
 			traceback.format_exc()
 			break
@@ -59,6 +60,7 @@ def daily_post(user_session, session):
 		for group_info in info:
 			if not group_info['passes']:
 				if group_info['id'] in ban_list:
+					print('banned')
 					group_list = {key: val for key, val in group_list.items() if val != group_info['id']}
 				else:
 					ban_list.append(group_info['id'])

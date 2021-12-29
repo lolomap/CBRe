@@ -40,7 +40,9 @@ async def await_post(user_session, session):
 
 			group_list = BotInnerApi.load_list()
 			for group in list(group_list.keys()):
+				print(group)
 				if group in ban_list:
+					print('ban')
 					group_list = {key: val for key, val in group_list.items() if val != group}
 			print(group_list)
 

@@ -26,25 +26,11 @@ class AsyncLoopThread(Thread):
 async def await_post(user_session, session):
 	while True:
 		try:
-			BotInnerApi.save_banlist(
-				[
-					'grkss', 'gips_albio', 'siburlend_cb', 'narianskaia', 'publicmsds', 'russian__republic',
-					'greattsardom_republic', 'murzinskiy_chel', 'metropolis_countryballs', 'country_balls', 'safflia'
-				])
-
 			ban_list_b = BotInnerApi.load_banlist()
 			ban_list = []
 			for ban in ban_list_b:
 				ban_list.append(ban.decode('utf-8'))
 			print(ban_list)
-
-			group_list = BotInnerApi.load_list()
-			for group in list(group_list.keys()):
-				print(group)
-				if group in ban_list:
-					print('ban')
-					group_list = {key: val for key, val in group_list.items() if val != group}
-			print(group_list)
 
 			##############
 
@@ -89,7 +75,7 @@ def daily_post(user_session, session):
 			if not group_info['passes']:
 				if group_info['id'] in ban_list:
 					print('banned')
-					group_list = {key: val for key, val in group_list.items() if val != group_info['id']}
+					del group_list[group_info['id']]
 				else:
 					ban_list.append(group_info['id'])
 					cleaned_info.append(group_info)

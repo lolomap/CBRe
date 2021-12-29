@@ -37,6 +37,13 @@ async def await_post(user_session, session):
 			print(t)
 			print(need_time)
 			print((need_time.timestamp() - t.timestamp()) / 60 / 60)
+
+			ban_list_b = BotInnerApi.load_banlist()
+			ban_list = []
+			for ban in ban_list_b:
+				ban_list.append(ban.decode('utf-8'))
+			print(ban_list)
+
 			await asyncio.sleep(need_time.timestamp() - t.timestamp())
 			if daily_post(user_session, session):
 				print('posted')
@@ -53,7 +60,10 @@ def daily_post(user_session, session):
 			int(os.environ.get('LIKE_RATING_DAY'))
 
 		group_list = BotInnerApi.load_list()
-		ban_list = BotInnerApi.load_banlist()
+		ban_list_b = BotInnerApi.load_banlist()
+		ban_list = []
+		for ban in ban_list_b:
+			ban_list.append(ban.decode('utf-8'))
 		groups_data = BotInnerApi.load_groups_data()
 
 		info = BotInnerApi.get_info(list(group_list.keys()), groups_data, user_session, is_like_day)
@@ -62,7 +72,7 @@ def daily_post(user_session, session):
 		cleaned_info = []
 		for group_info in info:
 			if not group_info['passes']:
-				if group_info['id'].encode("utf-8") in ban_list:
+				if group_info['id'] in ban_list:
 					print('banned')
 					group_list = {key: val for key, val in group_list.items() if val != group_info['id']}
 				else:

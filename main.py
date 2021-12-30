@@ -71,11 +71,15 @@ def daily_post(user_session, session):
 		info = BotInnerApi.get_info(list(group_list.keys()), groups_data, user_session, is_like_day)
 
 		cleaned_info = []
+
 		for group_info in info:
 			if not group_info['passes']:
 				if group_info['id'] in ban_list:
 					print('banned')
-					del group_list[group_info['id']]
+					try:
+						del group_list[group_info['id']]
+					except KeyError:
+						pass
 				else:
 					ban_list.append(group_info['id'])
 					cleaned_info.append(group_info)

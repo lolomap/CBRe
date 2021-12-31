@@ -82,6 +82,8 @@ def process_request(groups_list, event, session):
 				BotInnerApi.save_groups_data({'last': {}, 'deltas': {}, 'all': {}, 'likes': {}})
 			if event.obj['message']['text'] == 'бэкап':
 				BotInnerApi.set_list()
+			if event.obj['message']['text'] == 'амнистия':
+				BotInnerApi.save_banlist([])
 		return
 
 	payload = json.loads(event.obj['message']['payload'])

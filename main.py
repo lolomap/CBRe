@@ -45,12 +45,12 @@ async def await_post(user_session, session):
 			print(t)
 			print(need_time)
 			print((need_time.timestamp() - t.timestamp()) / 60 / 60)
-
+			await asyncio.sleep(need_time.timestamp() - t.timestamp())
 			if daily_post(user_session, session):
 				print('posted')
 			else:
 				print('fail posting')
-			await asyncio.sleep(need_time.timestamp() - t.timestamp())
+
 		except:
 			traceback.format_exc()
 			break

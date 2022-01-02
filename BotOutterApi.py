@@ -93,6 +93,7 @@ def process_request(groups_list, event, session):
 		VkApi.send_message('Группа из вашей заявки добавлена в список CBR', session, list(payload.values())[0][1])
 	elif list(payload.values())[0][0] == -1 and list(payload.keys())[0] in groups_list:
 		del groups_list[list(payload.keys())[0]]
+		BotInnerApi.save_list(groups_list)
 		VkApi.send_message('Группа из вашей заявки удалена из списка CBR', session, list(payload.values())[0][1])
 	else:
 		VkApi.send_message('Ваша заявка в CBR отклонена модератором', session, list(payload.values())[0][1])

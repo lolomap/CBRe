@@ -75,7 +75,7 @@ def remove_request_notify(event, session, user_session):
 	VkApi.send_message_attach(text, session, int(os.environ.get('USER_NOTIFY')), photo=photo, buttons=buttons)
 
 
-def process_request(groups_list, event, session):
+def process_request(groups_list, groups_data, event, session):
 	if 'payload' not in event.obj['message'].keys():
 		if event.obj['message']['from_id'] == int(os.environ.get('USER_NOTIFY')):
 			if event.obj['message']['text'] == 'сброс':
@@ -86,6 +86,8 @@ def process_request(groups_list, event, session):
 				BotInnerApi.save_banlist([])
 			if event.obj['message']['text'] == 'list':
 				print(groups_list)
+			if event.obj['message']['text'] == 'data':
+				print(groups_data)
 		return
 
 	payload = json.loads(event.obj['message']['payload'])

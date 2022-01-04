@@ -84,6 +84,8 @@ def process_request(groups_list, event, session):
 				BotInnerApi.set_list()
 			if event.obj['message']['text'] == 'амнистия':
 				BotInnerApi.save_banlist([])
+			if event.obj['message']['text'] == 'list':
+				print(groups_list)
 		return
 
 	payload = json.loads(event.obj['message']['payload'])

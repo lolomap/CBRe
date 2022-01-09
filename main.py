@@ -123,7 +123,7 @@ async def process_event(event, session, user_session):
 				BotOutterApi.remove_request_notify(event, session, user_session)
 		elif VkApi.is_event_message(event.type):
 			BotOutterApi.process_request(BotInnerApi.load_list(), BotInnerApi.load_groups_data(),
-										 event, session, user_session)
+										event, session, user_session)
 	except Exception:
 		# print('\nLONGPOLL EVENT ERROR:', repr(ee))
 		print(traceback.format_exc())

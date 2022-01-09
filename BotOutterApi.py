@@ -7,6 +7,7 @@ import pytz
 
 import BotInnerApi
 import VkApi
+import main
 
 
 def get_request_type(event):
@@ -75,7 +76,7 @@ def remove_request_notify(event, session, user_session):
 	VkApi.send_message_attach(text, session, int(os.environ.get('USER_NOTIFY')), photo=photo, buttons=buttons)
 
 
-def process_request(groups_list, groups_data, event, session):
+def process_request(groups_list, groups_data, event, session, user_session):
 	if 'payload' not in event.obj['message'].keys():
 		if event.obj['message']['from_id'] == int(os.environ.get('USER_NOTIFY')):
 			if event.obj['message']['text'] == 'сброс':
@@ -88,6 +89,8 @@ def process_request(groups_list, groups_data, event, session):
 				print(groups_list)
 			if event.obj['message']['text'] == 'data':
 				print(groups_data)
+			if event.obj['message']['text'] == 'пост':
+				main.daily_post(user_session, session)
 		return
 
 	payload = json.loads(event.obj['message']['payload'])

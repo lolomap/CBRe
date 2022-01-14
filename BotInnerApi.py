@@ -199,6 +199,6 @@ def create_post_content(info, mode, user_session):
 			post_text += group_info['name'] + ']: ' + str(group_info['delta_likes']) + '❤\n'
 			i += 1
 
-		photo = VkApi.upload_photo('likes', user_session)
+		# photo = VkApi.upload_photo('likes', user_session)
 
-		return {'text': post_text, 'photo': photo}
+		return {'text': post_text}

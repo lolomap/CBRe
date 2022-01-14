@@ -119,6 +119,9 @@ def get_info(groups_list, groups_data, user_session, is_likes):
 	info = []
 	time.sleep(2)
 	for group in groups:
+		if not ('members_count' in list(group.keys())):
+			print('skipped:', group)
+			continue
 		delta = group['members_count'] - groups_data['last'].get(group['screen_name'], group['members_count'])
 		if is_likes:
 			likes = get_likes(group['screen_name'], user_session)

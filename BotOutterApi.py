@@ -91,6 +91,18 @@ def process_request(groups_list, groups_data, event, session, user_session):
 				print(groups_data)
 			if event.obj['message']['text'] == 'пост':
 				main.daily_post(user_session, session)
+			if 'сброс ' in event.obj['message']['text']:
+				step = int(event.obj['message']['text'][7:])*(-1)
+				groups_data = \
+					{
+						'last': groups_data['last'][step:],
+						'deltas': groups_data['deltas'][step:],
+						'all': groups_data['all'][step:],
+						'likes': groups_data['likes'][step:]
+					}
+				BotInnerApi.save_groups_data(groups_data)
+
+				print(groups_data)
 		return
 
 	payload = json.loads(event.obj['message']['payload'])

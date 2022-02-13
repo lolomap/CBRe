@@ -102,9 +102,6 @@ def daily_post(user_session, session):
 			photos_ready=[VkApi.upload_photo_to_post(content['photo'], user_session)]
 		)
 
-		if is_like_day:
-			content = BotInnerApi.create_post_content(cleaned_info, 'likes', user_session)
-			VkApi.post(content['text'], user_session)
 
 		return True
 	except Exception:

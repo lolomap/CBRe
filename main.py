@@ -53,7 +53,6 @@ async def await_post(user_session, session):
 
 		except:
 			traceback.format_exc()
-			break
 
 
 def daily_post(user_session, session):

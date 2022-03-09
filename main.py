@@ -126,7 +126,7 @@ async def process_event(event, session, user_session):
 		print(traceback.format_exc())
 
 
-async def main():
+def main():
 	looph = AsyncLoopThread()
 	looph.start()
 

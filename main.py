@@ -144,7 +144,7 @@ async def main():
 if __name__ == '__main__':
 	while True:
 		try:
-			await main()
+			main()
 		except Exception:
 			# print(e)
 			print(traceback.format_exc())
